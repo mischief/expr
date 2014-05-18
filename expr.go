@@ -18,8 +18,18 @@ func init() {
 		OSUB:   osub,
 		ORSH:   orsh,
 		OLSH:   olsh,
-
-		OXOR: oxor,
+		OLT:    olt,
+		OGT:    ogt,
+		OLEQ:   oleq,
+		OGEQ:   ogeq,
+		OEQ:    oeq,
+		ONEQ:   oneq,
+		OLAND:  oland,
+		OXOR:   oxor,
+		OLOR:   olor,
+		OCAND:  ocand,
+		OCOR:   ocor,
+		ONOT:   onot,
 	}
 }
 
@@ -282,6 +292,330 @@ func olsh(n *Node) *Node {
 	return res
 }
 
+func olt(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	switch l.Type {
+	default:
+		panic(fmt.Sprintf("bad lhs type for < %s", l.Type))
+	case TINT:
+		switch r.Type {
+		case TINT:
+			if l.ival < r.ival {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if float64(l.ival) < r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for < %s", r.Type))
+		}
+	case TFLOAT:
+		switch r.Type {
+		case TINT:
+			if l.fval < float64(r.ival) {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if l.fval < r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for < %s", r.Type))
+		}
+	}
+
+	return res
+}
+
+func ogt(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	switch l.Type {
+	default:
+		panic(fmt.Sprintf("bad lhs type for > %s", l.Type))
+	case TINT:
+		switch r.Type {
+		case TINT:
+			if l.ival > r.ival {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if float64(l.ival) > r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for > %s", r.Type))
+		}
+	case TFLOAT:
+		switch r.Type {
+		case TINT:
+			if l.fval > float64(r.ival) {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if l.fval > r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for > %s", r.Type))
+		}
+	}
+
+	return res
+}
+
+func oleq(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	switch l.Type {
+	default:
+		panic(fmt.Sprintf("bad lhs type for <= %s", l.Type))
+	case TINT:
+		switch r.Type {
+		case TINT:
+			if l.ival <= r.ival {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if float64(l.ival) <= r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for <= %s", r.Type))
+		}
+	case TFLOAT:
+		switch r.Type {
+		case TINT:
+			if l.fval <= float64(r.ival) {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if l.fval <= r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for <= %s", r.Type))
+		}
+	}
+
+	return res
+}
+
+func ogeq(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	switch l.Type {
+	default:
+		panic(fmt.Sprintf("bad lhs type for >= %s", l.Type))
+	case TINT:
+		switch r.Type {
+		case TINT:
+			if l.ival >= r.ival {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if float64(l.ival) >= r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for >= %s", r.Type))
+		}
+	case TFLOAT:
+		switch r.Type {
+		case TINT:
+			if l.fval >= float64(r.ival) {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if l.fval >= r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for >= %s", r.Type))
+		}
+	}
+
+	return res
+}
+
+func oeq(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	switch l.Type {
+	default:
+		panic(fmt.Sprintf("bad lhs type for == %s", l.Type))
+	case TINT:
+		switch r.Type {
+		case TINT:
+			if l.ival == r.ival {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if float64(l.ival) == r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for == %s", r.Type))
+		}
+	case TFLOAT:
+		switch r.Type {
+		case TINT:
+			if l.fval == float64(r.ival) {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if l.fval == r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for == %s", r.Type))
+		}
+	}
+
+	return res
+}
+
+func oneq(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	switch l.Type {
+	default:
+		panic(fmt.Sprintf("bad lhs type for != %s", l.Type))
+	case TINT:
+		switch r.Type {
+		case TINT:
+			if l.ival != r.ival {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if float64(l.ival) != r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for != %s", r.Type))
+		}
+	case TFLOAT:
+		switch r.Type {
+		case TINT:
+			if l.fval != float64(r.ival) {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		case TFLOAT:
+			if l.fval != r.fval {
+				res.ival = 1
+			} else {
+				res.ival = 0
+			}
+		default:
+			panic(fmt.Sprintf("bad rhs type for != %s", r.Type))
+		}
+	}
+
+	return res
+}
+
+func oland(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	if l.Type != TINT || r.Type != TINT {
+		panic(fmt.Sprintf("bad expr %s ^ %s", l.Type, r.Type))
+	}
+
+	res.ival = l.ival & r.ival
+
+	return res
+}
+
 func oxor(n *Node) *Node {
 	l := expr(n.Left)
 	r := expr(n.Right)
@@ -296,6 +630,77 @@ func oxor(n *Node) *Node {
 	}
 
 	res.ival = l.ival ^ r.ival
+
+	return res
+}
+
+func olor(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	if l.Type != TINT || r.Type != TINT {
+		panic(fmt.Sprintf("bad expr %s ^ %s", l.Type, r.Type))
+	}
+
+	res.ival = l.ival | r.ival
+
+	return res
+}
+
+func ocand(n *Node) *Node {
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	res.ival = 0
+
+	if l := expr(n.Left); l.Bool() == false {
+		return res
+	}
+	if r := expr(n.Left); r.Bool() == false {
+		return res
+	}
+
+	res.ival = 1
+	return res
+}
+
+func ocor(n *Node) *Node {
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	res.ival = 0
+
+	if l := expr(n.Left); l.Bool() == true {
+		res.ival = 1
+	}
+
+	if r := expr(n.Left); r.Bool() == true {
+		res.ival = 1
+	}
+
+	return res
+}
+
+func onot(n *Node) *Node {
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	res.ival = 0
+
+	if l := expr(n.Left); l.Bool() == false {
+		res.ival = 1
+	}
 
 	return res
 }

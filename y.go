@@ -368,7 +368,8 @@ func (l *yyLex) numsym(c rune, lval *yySymType) int {
 			} else if isbin {
 				sel = "01"
 			} else if isfloat {
-				sel = "01234567890eE-+";
+				//sel = "01234567890eE-+";
+				sel = "01234567890eE";
 			}
 
 			if !strings.ContainsRune(sel, c) {

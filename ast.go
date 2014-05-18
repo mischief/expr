@@ -2,157 +2,160 @@ package expr
 
 import (
 	"fmt"
-	"math"
 )
 
-type Node interface {
-	String() string
-}
-
-type ExprOp int
-
-func (eo ExprOp) String() string {
-	str := "+-*/^%"
-	return string(str[eo])
-}
+type Type int
 
 const (
-	EAdd ExprOp = iota
-	ESub
-	EMul
-	EDiv
-	EPow
-	EMod
-	ENeg
+	TINT Type = iota
+	TFLOAT
+	TSTRING
+	TLIST
+	TCODE
 )
 
-type ExprNode struct {
-	op ExprOp
-	l  Node
-	r  Node
+var Typenames = map[Type]string{
+	TINT:    "int",
+	TFLOAT:  "float",
+	TSTRING: "string",
+	TLIST:   "list",
+	TCODE:   "code",
 }
 
-func Expr(op ExprOp, l, r Node) *ExprNode {
-	return &ExprNode{op, l, r}
+func (t Type) String() string {
+	return Typenames[t]
 }
 
-func (e ExprNode) String() string {
-	return fmt.Sprintf("%s %s %s", e.l, e.op, e.r)
-}
-
-type NumberNode struct {
-	v float64
-}
-
-func Number(v float64) *NumberNode {
-	return &NumberNode{v}
-}
-
-func (n NumberNode) String() string {
-	return fmt.Sprintf("%f", n.v)
-}
-
-type IdentOp int
+type Op int
 
 const (
-	IGet IdentOp = iota
-	ISet
-	ICall
+	ONAME Op = iota
+	OCONST
+	OMUL
+	ODIV
+	OMOD
+	OADD
+	OSUB
+	ORSH
+	OLSH
+	OLT
+	OGT
+	OLEQ
+	OGEQ
+	OEQ
+	ONEQ
+	OLAND
+	OXOR
+	OLOR
+	OCAND
+	OCOR
+	OASGN
+	OINDM
+	OEDEC
+	OEINC
+	OPINC
+	OPDEC
+	ONOT
+	OIF
+	ODO
+	OLIST
+	OCALL
+	OCTRUCT
+	OWHILE
+	OELSE
+	OHEAD
+	OTAIL
+	OAPPEND
+	ORET
+	OINDEX
+	OINDC
+	ODOT
+	OLOCAL
+	OFRAME
+	OCOMPLEX
+	ODELETE
+	OCAST
+	OFMT
+	OEVAL
+	OWHAT
 )
 
-type IdentNode struct {
-	op   IdentOp
-	name string
-	val  Node
+var Opnames = map[Op]string{
+	ONAME: "name",
+	OCONST: "const",
+	OMUL: "mul",
+	ODIV: "div",
+	OMOD: "mod",
+	OADD: "add",
+	OSUB: "sub",
+	ORSH: "rsh",
+	OLSH: "lsh",
+
+	OASGN: "asgn",
 }
 
-func Ident(op IdentOp, name string, val Node) *IdentNode {
-	return &IdentNode{op, name, val}
-}
-
-func (i IdentNode) String() string {
-	switch i.op {
-	case IGet:
-		return fmt.Sprintf("%s", i.name)
-	case ISet:
-		return fmt.Sprintf("%s = %s", i.name, i.val)
-	case ICall:
-		return fmt.Sprintf("%s(%s)", i.name, i.val)
+func (o Op) String() string {
+	n, ok := Opnames[o]
+	if !ok {
+		return fmt.Sprintf("unknown op %d", o)
 	}
-
-	return "unknown ident type"
+	return n
 }
 
-var Idents = map[string]Node{}
-var Funcs = map[string]func(float64) float64{}
-
-func init() {
-	Funcs["sqrt"] = math.Sqrt
+type Store struct {
+	ival int64
+	fval float64
+	sval string
+	lval List
+	cc   *Node
 }
 
-func eval(n Node) (rv Node) {
-	switch n.(type) {
-	case *ExprNode:
-		e := n.(*ExprNode)
-		l := eval(e.l).(*NumberNode)
-		r := eval(e.r).(*NumberNode)
-		switch e.op {
-		case EAdd:
-			rv = Number(l.v + r.v)
-		case ESub:
-			rv = Number(l.v - r.v)
-		case EMul:
-			rv = Number(l.v * r.v)
-		case EDiv:
-			if r.v == 0 {
-				rv = Number(0)
-			} else {
-				rv = Number(l.v / r.v)
-			}
-		case EMod:
-			if r.v == 0 {
-				rv = Number(0)
-			} else {
-				rv = Number(math.Mod(l.v, r.v))
-			}
-		case EPow:
-			rv = Number(math.Pow(l.v, r.v))
-		case ENeg:
-			rv = Number(-l.v)
-		}
-	case *NumberNode:
-		rv = n
-	case *IdentNode:
-		i := n.(*IdentNode)
-		switch i.op {
-		case IGet:
-			if r, ok := Idents[i.name]; ok {
-				rv = r
-			} else {
-				rv = Number(0)
-				//panic(fmt.Sprintf("%s doesn't exist", i.name))
-			}
-		case ISet:
-			Idents[i.name] = eval(i.val)
-			rv = Idents[i.name]
-		case ICall:
-			if r, ok := Funcs[i.name]; ok {
-				rv = Number(r(eval(i.val).(*NumberNode).v))
-			} else {
-			}
+type Node struct {
+	Left, Right *Node
+
+	Op
+	Type
+	Store
+}
+
+func (n Node) String() string {
+	switch n.Op {
+	case OCONST:
+		switch n.Type {
+		case TINT:
+			return fmt.Sprintf("%s(%d)", n.Type, n.ival)
+		case TFLOAT:
+			return fmt.Sprintf("%s(%f)", n.Type, n.fval)
+		case TSTRING:
+			return fmt.Sprintf("%s(%s)", n.Type, n.sval)
 		}
 	}
+	return fmt.Sprintf("%s %s %s", n.Left, n.Op, n.Right)
+}
 
-	return
+func AN(op Op, l, r *Node) *Node {
+	return &Node{Op: op, Left: l, Right: r}
+}
+
+func Const(v int64) *Node {
+	n := AN(OCONST, nil, nil)
+	n.ival = v
+	n.Type = TINT
+	return n
+}
+
+type Lsym struct {
+	Name   string
+	lexval int
+
+	Builtin func(n, res *Node)
 }
 
 /* run some code, get a node */
-func run(s string) nstack {
-	for stack.Size() > 0 {
-		stack.Pop()
-	}
-	yyParse(NewLexer(s))
-	return stack
+func run(s string) *yyLex {
+	lex := NewLexer(s + ";")
+	yyParse(lex)
+	return lex
 }
 
 /* convert result to string, trap panics */
@@ -163,19 +166,22 @@ func Proteval(s string) (rs string) {
 		}
 	}()
 
-	var res []Node
+	//var res []Node
 
-	r := run(s)
-	for r.Size() > 0 {
-		res = append([]Node{r.Pop()}, res...)
-	}
-	out := " ="
-	for i, n := range res {
-		if i > 0 {
-			out += ","
+	n := run(s)
+	return fmt.Sprintf("%s", expr(n.node))
+	/*
+		for r.Size() > 0 {
+			res = append([]Node{r.Pop()}, res...)
 		}
-		out += fmt.Sprintf(" %s", eval(n))
-	}
-	return out
+		out := " ="
+		for i, n := range res {
+			if i > 0 {
+				out += ","
+			}
+			out += fmt.Sprintf(" %s", eval(n))
+		}
+	*/
+	return ""
 }
 

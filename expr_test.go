@@ -5,24 +5,17 @@ import (
 )
 
 func TestYacc(t *testing.T) {
-	yyDebug = 1
+	yyDebug = 4
 
-	exprs := []nstack{
-		run("a = 3"),
-		run("b = 3"),
-		run("c = 3"),
+	exprs := []string{
+		`1024 * 1024`,
+		`"foo" + "bar"`,
+		`5 * (1000 + 100) * 5`,
+		`8<<8`,
 	}
 
 	for _, s := range exprs {
-		e := s.Pop()
-		t.Logf("%s -> %s", e, eval(e))
-	}
-
-	res := run("a * b * c")
-
-	t.Logf("result: %f", eval(res.Pop()).(*NumberNode).v)
-
-	for stack.Size() > 0 {
-		t.Logf("%v", stack.Pop())
+		r := Proteval(s)
+		t.Logf("%s -> %s", s, r)
 	}
 }

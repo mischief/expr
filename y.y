@@ -388,7 +388,7 @@ loop:
 		case '\'':
 			c = l.next()
 			if c == '\\' {
-				lval.ival = int64(c) //escchar(l.next());
+				lval.ival = int64(l.escchar(l.next()))
 			} else {
 				lval.ival = int64(c)
 			}
@@ -461,6 +461,49 @@ loop:
 			return l.numsym(c, lval)
 		}
 	}
+}
+
+var cmap = map[rune]rune {
+	'0': '\x00',
+	'n': '\n',
+	'r': '\r',
+	't': '\t',
+	'b': '\b',
+	'f': '\f',
+	'a': '\a',
+	'v': '\v',
+	'\\': '\\',
+	'"': '"',
+}
+
+func (l *yyLex) escchar(c rune) rune {
+	buf := new(bytes.Buffer)
+
+	if c >= '0' && c <= '9' {
+		buf.WriteRune(c)
+		for {
+			c = l.next()
+			if c == Eof {
+				panic("eof in escape sequence")
+			}
+			if !strings.ContainsRune("0123456789xX", c) { 
+				l.peek = c
+				break
+			}
+			buf.WriteRune(c)
+		}
+		esc, err := strconv.ParseInt(buf.String(), 0, 32)
+		if err != nil {
+			panic(fmt.Sprintf("escchar: %s", err))
+		}
+		return rune(esc)
+	}
+
+	n := cmap[c]
+	if n == 0 {
+		return c
+	}
+	return n;
 }
 
 func (l *yyLex) Error(s string) {

@@ -554,6 +554,7 @@ func (l *yyLex) numsym(c rune, lval *yySymType) int {
 		}
 
 		if isbin {
+			buf.Next(2)
 			ival, err := strconv.ParseInt(buf.String(), 2, 64)
 			if err != nil {
 				panic("bad binary " + buf.String() + " : " + err.Error())

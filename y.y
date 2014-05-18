@@ -561,7 +561,7 @@ func (l *yyLex) numsym(c rune, lval *yySymType) int {
 			}
 			lval.ival = ival
 		} else {
-			ival, err := strconv.ParseInt(buf.String(), 10, 64)
+			ival, err := strconv.ParseInt(buf.String(), 0, 64)
 			if err != nil {
 				panic("bad number " + buf.String() + " : " + err.Error())
 			}

@@ -14,7 +14,7 @@ func main() {
 
 	fmt.Print("-> ")
 	for sc.Scan() {
-		expr.Idents["line"] = expr.Number(l)
+//		expr.Idents["line"] = expr.Number(l)
 		l++
 		if rs := expr.Proteval(sc.Text()); rs != "" {
 			fmt.Println(rs)

@@ -245,7 +245,7 @@ func orsh(n *Node) *Node {
 	}
 
 	if l.Type != TINT || r.Type != TINT {
-		panic(fmt.Sprintf("bad expr %s %% %s", l.Type, r.Type))
+		panic(fmt.Sprintf("bad expr %s >> %s", l.Type, r.Type))
 	}
 
 	res.ival = l.ival >> uint64(r.ival)
@@ -263,7 +263,7 @@ func olsh(n *Node) *Node {
 	}
 
 	if l.Type != TINT || r.Type != TINT {
-		panic(fmt.Sprintf("bad expr %s %% %s", l.Type, r.Type))
+		panic(fmt.Sprintf("bad expr %s << %s", l.Type, r.Type))
 	}
 
 	res.ival = l.ival << uint64(r.ival)

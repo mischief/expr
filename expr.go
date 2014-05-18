@@ -2,6 +2,7 @@ package expr
 
 import (
 	"fmt"
+	"strings"
 )
 
 var expop map[Op]func(*Node) *Node
@@ -70,6 +71,14 @@ func omul(n *Node) *Node {
 			res.fval = l.fval * float64(r.ival)
 		case TFLOAT:
 			res.fval = l.fval * r.fval
+		default:
+			panic(fmt.Sprintf("bad rhs type for * %s", r.Type))
+		}
+	case TSTRING:
+		res.Type = TSTRING
+		switch r.Type {
+		case TINT:
+			res.sval = strings.Repeat(l.sval, int(r.ival))
 		default:
 			panic(fmt.Sprintf("bad rhs type for * %s", r.Type))
 		}

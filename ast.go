@@ -81,17 +81,36 @@ const (
 )
 
 var Opnames = map[Op]string{
-	ONAME: "name",
+	ONAME:  "name",
 	OCONST: "const",
-	OMUL: "mul",
-	ODIV: "div",
-	OMOD: "mod",
-	OADD: "add",
-	OSUB: "sub",
-	ORSH: "rsh",
-	OLSH: "lsh",
+	OMUL:   "mul",
+	ODIV:   "div",
+	OMOD:   "mod",
+	OADD:   "add",
+	OSUB:   "sub",
+	ORSH:   "rsh",
+	OLSH:   "lsh",
+	OLT:    "lt",
+	OGT:    "gt",
+	OLEQ:   "leq",
+	OGEQ:   "geq",
+	OEQ:    "eq",
+	ONEQ:   "neq",
+	OLAND:  "land",
+	OXOR:   "xor",
+	OLOR:   "lor",
+	OCAND:  "cand",
+	OCOR:   "cor",
+	OASGN:  "asgn",
 
-	OASGN: "asgn",
+	ONOT:  "not",
+	OIF:   "if",
+	ODO:   "do",
+	OLIST: "list",
+	OCALL: "call",
+
+	OEVAL: "eval",
+	OWHAT: "what",
 }
 
 func (o Op) String() string {
@@ -184,4 +203,3 @@ func Proteval(s string) (rs string) {
 	*/
 	return ""
 }
-

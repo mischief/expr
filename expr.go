@@ -18,6 +18,8 @@ func init() {
 		OSUB:   osub,
 		ORSH:   orsh,
 		OLSH:   olsh,
+
+		OXOR: oxor,
 	}
 }
 
@@ -276,6 +278,24 @@ func olsh(n *Node) *Node {
 	}
 
 	res.ival = l.ival << uint64(r.ival)
+
+	return res
+}
+
+func oxor(n *Node) *Node {
+	l := expr(n.Left)
+	r := expr(n.Right)
+
+	res := &Node{
+		Op:   OCONST,
+		Type: TINT,
+	}
+
+	if l.Type != TINT || r.Type != TINT {
+		panic(fmt.Sprintf("bad expr %s ^ %s", l.Type, r.Type))
+	}
+
+	res.ival = l.ival ^ r.ival
 
 	return res
 }

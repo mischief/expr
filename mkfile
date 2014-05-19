@@ -1,7 +1,7 @@
 all:V:	y.go
 	go test -v
 
-y.go:	y.y
+y.go:	dbg.y
 	go tool yacc $prereq
 
 clean:V:

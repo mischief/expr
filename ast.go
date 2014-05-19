@@ -129,8 +129,26 @@ type Store struct {
 	cc   *Node
 }
 
+type Value struct {
+	set   bool
+	pop   *Value
+	scope *Lsym
+
+	Type
+	Store
+}
+
+type Lsym struct {
+	Name    string
+	Lexval  int
+	V       *Value
+	Proc    *Node
+	Builtin func(n, res *Node)
+}
+
 type Node struct {
 	Left, Right *Node
+	Sym         *Lsym
 
 	Op
 	Type
@@ -163,13 +181,6 @@ func Const(v int64) *Node {
 	return n
 }
 
-type Lsym struct {
-	Name   string
-	lexval int
-
-	Builtin func(n, res *Node)
-}
-
 /* run some code, get a node */
 func run(s string) *yyLex {
 	lex := NewLexer(s + ";")
@@ -185,21 +196,15 @@ func Proteval(s string) (rs string) {
 		}
 	}()
 
-	//var res []Node
-
 	n := run(s)
-	return fmt.Sprintf("%s", expr(n.node))
-	/*
-		for r.Size() > 0 {
-			res = append([]Node{r.Pop()}, res...)
-		}
-		out := " ="
-		for i, n := range res {
-			if i > 0 {
-				out += ","
-			}
-			out += fmt.Sprintf(" %s", eval(n))
-		}
-	*/
-	return ""
+	if n.node == nil {
+		return fmt.Sprintf("parse error")
+	}
+
+	res := expr(n.node)
+	if res == nil {
+		return fmt.Sprintf("eval error")
+	}
+
+	return fmt.Sprintf("%s", res)
 }

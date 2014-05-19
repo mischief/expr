@@ -6,7 +6,7 @@ import __yyfmt__ "fmt"
 //line dbg.y:3
 		
 import (
-	"fmt"
+	//"fmt"
 )
 
 
@@ -110,7 +110,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyMaxDepth = 200
 
-//line dbg.y:311
+//line dbg.y:310
 
 
 
@@ -518,71 +518,70 @@ yydefault:
 		//line dbg.y:52
 		{
 				//Execrec($1)
-			fmt.Printf("bigstmnt: %s\n", yyS[yypt-0].node)
-				yylex.(*yyLex).node = yyS[yypt-0].node
+			yylex.(*yyLex).node = yyS[yypt-0].node
 			}
 	case 4:
-		//line dbg.y:58
+		//line dbg.y:57
 		{
 				yyS[yypt-7].sym.Proc = AN(OLIST, yyS[yypt-5].node, yyS[yypt-1].node)
 			}
 	case 5:
-		//line dbg.y:62
+		//line dbg.y:61
 		{
 				yyS[yypt-0].sym.Proc = nil
 			}
 	case 8:
-		//line dbg.y:72
+		//line dbg.y:71
 		{ yyVAL.sym = nil; }
 	case 9:
 		yyVAL.sym = yyS[yypt-0].sym
 	case 10:
-		//line dbg.y:77
+		//line dbg.y:76
 		{
 				yyVAL.node = yyS[yypt-0].node
 			}
 	case 11:
-		//line dbg.y:81
+		//line dbg.y:80
 		{
 				yyVAL.node = AN(OLIST, yyS[yypt-1].node, yyS[yypt-0].node)
 			}
 	case 12:
-		//line dbg.y:87
+		//line dbg.y:86
 		{
 				yyVAL.node = yyS[yypt-1].node
 			}
 	case 13:
-		//line dbg.y:91
+		//line dbg.y:90
 		{
 				yyVAL.node = yyS[yypt-1].node
 			}
 	case 14:
-		//line dbg.y:95
+		//line dbg.y:94
 		{
 				yyVAL.node = AN(OIF, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 15:
-		//line dbg.y:99
+		//line dbg.y:98
 		{
 				yyVAL.node = AN(OIF, yyS[yypt-4].node, AN(OELSE, yyS[yypt-2].node, yyS[yypt-0].node));
 			}
 	case 16:
-		//line dbg.y:103
+		//line dbg.y:102
 		{
 				yyVAL.node = AN(ODO, AN(OLIST, yyS[yypt-4].node, yyS[yypt-2].node), yyS[yypt-0].node);
 			}
 	case 17:
-		//line dbg.y:107
+		//line dbg.y:106
 		{
 				yyVAL.node = AN(OWHILE, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 18:
-		//line dbg.y:111
+		//line dbg.y:110
 		{
 				yyVAL.node = AN(ORET, yyS[yypt-1].node, nil);
 			}
 	case 19:
-		//line dbg.y:117
+		//line dbg.y:116
 		{
 				yyVAL.node = nil
 			}
@@ -591,102 +590,102 @@ yydefault:
 	case 21:
 		yyVAL.node = yyS[yypt-0].node
 	case 22:
-		//line dbg.y:125
+		//line dbg.y:124
 		{
 				yyVAL.node = AN(OMUL, yyS[yypt-2].node, yyS[yypt-0].node); 
 			}
 	case 23:
-		//line dbg.y:129
+		//line dbg.y:128
 		{
 				yyVAL.node = AN(ODIV, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 24:
-		//line dbg.y:133
+		//line dbg.y:132
 		{
 				yyVAL.node = AN(OMOD, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 25:
-		//line dbg.y:137
+		//line dbg.y:136
 		{
 				yyVAL.node = AN(OADD, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 26:
-		//line dbg.y:141
+		//line dbg.y:140
 		{
 				yyVAL.node = AN(OSUB, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 27:
-		//line dbg.y:145
+		//line dbg.y:144
 		{
 				yyVAL.node = AN(ORSH, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 28:
-		//line dbg.y:149
+		//line dbg.y:148
 		{
 				yyVAL.node = AN(OLSH, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 29:
-		//line dbg.y:153
+		//line dbg.y:152
 		{
 				yyVAL.node = AN(OLT, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 30:
-		//line dbg.y:157
+		//line dbg.y:156
 		{
 				yyVAL.node = AN(OGT, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 31:
-		//line dbg.y:161
+		//line dbg.y:160
 		{
 				yyVAL.node = AN(OLEQ, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 32:
-		//line dbg.y:165
+		//line dbg.y:164
 		{
 				yyVAL.node = AN(OGEQ, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 33:
-		//line dbg.y:169
+		//line dbg.y:168
 		{
 				yyVAL.node = AN(OEQ, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 34:
-		//line dbg.y:173
+		//line dbg.y:172
 		{
 				yyVAL.node = AN(ONEQ, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 35:
-		//line dbg.y:177
+		//line dbg.y:176
 		{
 				yyVAL.node = AN(OLAND, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 36:
-		//line dbg.y:181
+		//line dbg.y:180
 		{
 				yyVAL.node = AN(OXOR, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 37:
-		//line dbg.y:185
+		//line dbg.y:184
 		{
 				yyVAL.node = AN(OLOR, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 38:
-		//line dbg.y:189
+		//line dbg.y:188
 		{
 				yyVAL.node = AN(OCAND, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 39:
-		//line dbg.y:193
+		//line dbg.y:192
 		{
 				yyVAL.node = AN(OCOR, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 40:
-		//line dbg.y:197
+		//line dbg.y:196
 		{
 				yyVAL.node = AN(OASGN, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 41:
-		//line dbg.y:201
+		//line dbg.y:200
 		{
 				yyVAL.node = AN(OFMT, yyS[yypt-1].node, Const(yyS[yypt-0].ival));
 			}
@@ -695,73 +694,73 @@ yydefault:
 	case 43:
 		yyVAL.node = yyS[yypt-0].node
 	case 44:
-		//line dbg.y:211
+		//line dbg.y:210
 		{
 				yyVAL.node = AN(OADD, yyS[yypt-0].node, nil);
 			}
 	case 45:
-		//line dbg.y:215
+		//line dbg.y:214
 		{
 				yyVAL.node = Const(0);
 				yyVAL.node = AN(OSUB, yyVAL.node, yyS[yypt-0].node);
 			}
 	case 46:
-		//line dbg.y:220
+		//line dbg.y:219
 		{
 				yyVAL.node = AN(OEDEC, yyS[yypt-0].node, nil);
 			}
 	case 47:
-		//line dbg.y:224
+		//line dbg.y:223
 		{
 				yyVAL.node = AN(OEINC, yyS[yypt-0].node, nil);
 			}
 	case 48:
-		//line dbg.y:228
+		//line dbg.y:227
 		{
 				yyVAL.node = AN(OHEAD, yyS[yypt-0].node, nil);
 			}
 	case 49:
-		//line dbg.y:232
+		//line dbg.y:231
 		{
 				yyVAL.node = AN(OTAIL, yyS[yypt-0].node, nil);
 			}
 	case 50:
-		//line dbg.y:236
+		//line dbg.y:235
 		{
 				yyVAL.node = AN(OAPPEND, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 51:
-		//line dbg.y:240
+		//line dbg.y:239
 		{
 				yyVAL.node = AN(ODELETE, yyS[yypt-2].node, yyS[yypt-0].node);
 			}
 	case 52:
-		//line dbg.y:244
+		//line dbg.y:243
 		{
 				yyVAL.node = AN(ONOT, yyS[yypt-0].node, nil);
 			}
 	case 53:
-		//line dbg.y:248
+		//line dbg.y:247
 		{
 				yyVAL.node = AN(OXOR, yyS[yypt-0].node, Const(-1));
 			}
 	case 54:
-		//line dbg.y:252
+		//line dbg.y:251
 		{
 				yyVAL.node = AN(OEVAL, yyS[yypt-0].node, nil);
 			}
 	case 55:
-		//line dbg.y:258
+		//line dbg.y:257
 		{
 				yyVAL.node = yyS[yypt-1].node
 			}
 	case 56:
-		//line dbg.y:262
+		//line dbg.y:261
 		{
 				yyVAL.node = AN(OCALL, yyS[yypt-3].node, yyS[yypt-1].node);
 			}
 	case 57:
-		//line dbg.y:266
+		//line dbg.y:265
 		{
 				yyVAL.node = AN(OCALL, yyS[yypt-3].node, yyS[yypt-1].node);
 				//$$->builtin = 1;
@@ -769,13 +768,13 @@ yydefault:
 	case 58:
 		yyVAL.node = yyS[yypt-0].node
 	case 59:
-		//line dbg.y:272
+		//line dbg.y:271
 		{
 				//fmt.Printf("Tconst %d\n", $1)
 			yyVAL.node = Const(yyS[yypt-0].ival);
 			}
 	case 60:
-		//line dbg.y:277
+		//line dbg.y:276
 		{
 				yyVAL.node = AN(OCONST, nil, nil);
 				yyVAL.node.Type = TFLOAT;
@@ -783,7 +782,7 @@ yydefault:
 			yyVAL.node.fval = yyS[yypt-0].fval;
 			}
 	case 61:
-		//line dbg.y:284
+		//line dbg.y:283
 		{
 				yyVAL.node = AN(OCONST, nil, nil);
 				yyVAL.node.Type = TSTRING;
@@ -791,13 +790,13 @@ yydefault:
 				//$$->fmt = 's';
 		}
 	case 62:
-		//line dbg.y:293
+		//line dbg.y:292
 		{
 				yyVAL.node = AN(ONAME, nil, nil);
 				//$$->sym = $1;
 		}
 	case 63:
-		//line dbg.y:298
+		//line dbg.y:297
 		{
 				yyVAL.node = AN(OFRAME, yyS[yypt-0].node, nil);
 				//$$->sym = $1;
@@ -805,7 +804,7 @@ yydefault:
 	case 64:
 		yyVAL.node = yyS[yypt-0].node
 	case 65:
-		//line dbg.y:306
+		//line dbg.y:305
 		{
 				yyVAL.node = AN(OLIST, yyS[yypt-2].node, yyS[yypt-0].node);
 			}

@@ -2,7 +2,6 @@ package expr
 
 import (
 	"fmt"
-	"strings"
 )
 
 var expop map[Op]func(*Node) *Node
@@ -34,6 +33,10 @@ func init() {
 }
 
 func expr(n *Node) *Node {
+	if n == nil {
+		return nil
+	}
+
 	opfun, ok := expop[n.Op]
 	if !ok {
 		panic(fmt.Sprintf("missing op %s", n.Op))
@@ -86,6 +89,8 @@ func omul(n *Node) *Node {
 		default:
 			panic(fmt.Sprintf("bad rhs type for * %s", r.Type))
 		}
+	/* TSTRING * TINT is prone to abuse. */
+	/*
 	case TSTRING:
 		res.Type = TSTRING
 		switch r.Type {
@@ -94,6 +99,7 @@ func omul(n *Node) *Node {
 		default:
 			panic(fmt.Sprintf("bad rhs type for * %s", r.Type))
 		}
+	*/
 	}
 
 	return res
